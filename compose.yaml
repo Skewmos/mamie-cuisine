@@ -1,27 +1,18 @@
 
 services:
-###> doctrine/doctrine-bundle ###
   database:
     image: postgres:${POSTGRES_VERSION:-16}-alpine
     environment:
       POSTGRES_DB: "mamie_cuisine"
-      # You should definitely change the password in production
       POSTGRES_PASSWORD: "test"
       POSTGRES_USER: "jerem"
     healthcheck:
-      test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-app}", "-U", "${POSTGRES_USER:-app}"]
+      test: ["CMD", "pg_isready", "-d", "mamie_cuisine", "-U", "jerem"]
       timeout: 5s
       retries: 5
       start_period: 60s
     ports:
       - "5432:5432"
     volumes:
-      - database_data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+      - ./docker/db/data:/var/lib/postgresql/data:rw
 
-volumes:
-###> doctrine/doctrine-bundle ###
-  database_data:
-###< doctrine/doctrine-bundle ###
