@@ -5,6 +5,14 @@
 {% block body %}
     <div class="container">
         <h3> {{ recipe.title }}</h3>
+        <div class="d-flex gap-1">
+            <a href="{{ path('app_recipe_edit', {'id': recipe.id}) }}" class="btn btn-success">Modifier</a>
+            <form action="{{ path('app_recipe_delete', {'id': recipe.id}) }}" method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ recipe.id) }}">
+                <button class="btn btn-danger">Supprimer</button>
+            </form>
+        </div>
         <hr/>
         <span class="text-muted">Date de publication : {{ recipe.createdAt|date('d/m/Y') }}</span>
         <span class="text-muted">Date de mise à jour : {{ recipe.updatedAt|date('d/m/Y') }}</span>

@@ -6,5 +6,37 @@
     {% include 'home/_carousel.html.twig' %}
     <div class="container mt-5">
         <h2> Bienvenue sur Mamie Cuisine </h2>
+        <h4>Nos recettes les plus populaires</h4>
+        <div id="recipeCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                {% for recipe in recipes %}
+                    {% if loop.index0 % 4 == 0 %}
+                        <div class="carousel-item {% if loop.first %}active{% endif %}">
+                        <div class="row">
+                    {% endif %}
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ recipe.title }}</h5>
+                                <p class="card-text">{{ recipe.content|slice(0, 180) ~ '...'  }}</p>
+                                <a href="{{ path('app_recipe_show', {'slug': recipe.slug, 'id': recipe.id}) }}" class="btn btn-primary">Voir la recette</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% if loop.index0 % 4 == 3 or loop.last %}
+                        </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#recipeCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#recipeCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
     </div>
 {% endblock %}
