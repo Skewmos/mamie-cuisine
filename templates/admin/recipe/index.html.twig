@@ -1,11 +1,11 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base-admin.html.twig' %}
 
 {% block title %}Liste des recettes de mamie cuisine{% endblock %}
 
 {% block body %}
     <div class="container mt-3">
         <h3> Liste des recettes de mamie cuisine</h3>
-        <a href="{{ path('app_recipe_new') }}" class="btn btn-success ">Ajouter une recette</a>
+        <a href="{{ path('admin_recipe_new') }}" class="btn btn-success ">Ajouter une recette</a>
         <hr/>
         <div class="row">
             {% for recipe in recipes %}
@@ -14,7 +14,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ recipe.title }}</h5>
                             <p class="card-text">{{ recipe.content|slice(0, 180) ~ '...' }}</p>
-                            <a href="{{ path('app_recipe_show', {'slug': recipe.slug, 'id': recipe.id}) }}" class="btn btn-primary">Voir la recette</a>
+                            <a href="{{ path('admin_recipe_show', {'slug': recipe.slug, 'id': recipe.id}) }}" class="btn btn-primary">Voir la recette</a>
                         </div>
                     </div>
                 </div>

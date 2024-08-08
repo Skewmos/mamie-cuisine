@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base-admin.html.twig' %}
 
 {% block title %}Recette : {{ recipe.title }}{% endblock %}
 
@@ -6,8 +6,8 @@
     <div class="container">
         <h3> {{ recipe.title }}</h3>
         <div class="d-flex gap-1">
-            <a href="{{ path('app_recipe_edit', {'id': recipe.id}) }}" class="btn btn-success">Modifier</a>
-            <form action="{{ path('app_recipe_delete', {'id': recipe.id}) }}" method="post">
+            <a href="{{ path('admin_recipe_edit', {'id': recipe.id}) }}" class="btn btn-success">Modifier</a>
+            <form action="{{ path('admin_recipe_delete', {'id': recipe.id}) }}" method="post">
                 <input type="hidden" name="_method" value="DELETE">
                 <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ recipe.id) }}">
                 <button class="btn btn-danger">Supprimer</button>
