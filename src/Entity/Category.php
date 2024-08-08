@@ -2,16 +2,18 @@
 
 namespace App\Entity;
 
-use App\Repository\RecipeRepository;
-use Doctrine\DBAL\Types\Types;
+use App\Repository\CategoryRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: RecipeRepository::class)]
-#[UniqueEntity('title')]
+
+#[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[UniqueEntity('name')]
 #[UniqueEntity('slug')]
-class Recipe
+class Category
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -19,15 +21,12 @@ class Recipe
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Length(min: 3, max: 70)]
-    private ?string $title = null;
+    #[Assert\Length(min: 3)]
+    private ?string $name = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\Length(min: 3)]
     private ?string $slug = null;
-
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $content = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -35,28 +34,30 @@ class Recipe
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\Column(nullable: true)]
-    #[Assert\Positive()]
-    #[Assert\NotBlank()]
-    #[Assert\LessThan(value: 1440)]
-    private ?int $duration = null;
+    /**
+     * @var Collection<int, Recipe>
+     */
+    #[ORM\OneToMany(targetEntity: Recipe::class, mappedBy: 'category')]
+    private Collection $recipes;
 
-    #[ORM\ManyToOne(inversedBy: 'recipes')]
-    private ?Category $category = null;
+    public function __construct()
+    {
+        $this->recipes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getName(): ?string
     {
-        return $this->title;
+        return $this->name;
     }
 
-    public function setTitle(string $title): static
+    public function setName(string $name): static
     {
-        $this->title = $title;
+        $this->name = $name;
 
         return $this;
     }
@@ -69,18 +70,6 @@ class Recipe
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
-
-        return $this;
-    }
-
-    public function getContent(): ?string
-    {
-        return $this->content;
-    }
-
-    public function setContent(string $content): static
-    {
-        $this->content = $content;
 
         return $this;
     }
@@ -109,26 +98,32 @@ class Recipe
         return $this;
     }
 
-    public function getDuration(): ?int
+    /**
+     * @return Collection<int, Recipe>
+     */
+    public function getRecipes(): Collection
     {
-        return $this->duration;
+        return $this->recipes;
     }
 
-    public function setDuration(?int $duration): static
+    public function addRecipe(Recipe $recipe): static
     {
-        $this->duration = $duration;
+        if (!$this->recipes->contains($recipe)) {
+            $this->recipes->add($recipe);
+            $recipe->setCategory($this);
+        }
 
         return $this;
     }
 
-    public function getCategory(): ?Category
+    public function removeRecipe(Recipe $recipe): static
     {
-        return $this->category;
-    }
-
-    public function setCategory(?Category $category): static
-    {
-        $this->category = $category;
+        if ($this->recipes->removeElement($recipe)) {
+            // set the owning side to null (unless already changed)
+            if ($recipe->getCategory() === $this) {
+                $recipe->setCategory(null);
+            }
+        }
 
         return $this;
     }

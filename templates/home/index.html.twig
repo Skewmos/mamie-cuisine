@@ -19,7 +19,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ recipe.title }}</h5>
                                 <p class="card-text">{{ recipe.content|slice(0, 180) ~ '...'  }}</p>
-                                <a href="{{ path('app_recipe_show', {'slug': recipe.slug, 'id': recipe.id}) }}" class="btn btn-primary">Voir la recette</a>
+                                <a href="{{ path('admin_recipe_show', {'slug': recipe.slug, 'id': recipe.id}) }}" class="btn btn-primary">Voir la recette</a>
                             </div>
                         </div>
                     </div>

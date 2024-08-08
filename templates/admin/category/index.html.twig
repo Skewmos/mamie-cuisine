@@ -1,0 +1,43 @@
+{% extends 'admin/base-admin.html.twig' %}
+
+{% block title %}Category index{% endblock %}
+
+{% block body %}
+    <section class="container mt-4">
+        <h1>Liste des catégories</h1>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Slug</th>
+                <th>Date de création</th>
+                <th>Date de modification</th>
+                <th>actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for category in categories %}
+                <tr>
+                    <td>{{ category.id }}</td>
+                    <td>{{ category.name }}</td>
+                    <td>{{ category.slug }}</td>
+                    <td>{{ category.createdAt ? category.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ category.updatedAt ? category.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>
+                        <a href="{{ path('admin_category_show', {'id': category.id}) }}" class="btn btn-primary">Voir</a>
+                        <a href="{{ path('admin_category_edit', {'id': category.id}) }}" class="btn btn-info">Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('admin_category_new') }}" class="btn btn-success">Créer une nouvelle catégorie</a>
+    </section>
+{% endblock %}
