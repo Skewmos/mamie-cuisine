@@ -7,6 +7,7 @@ use App\Form\RecipeType;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -54,9 +55,6 @@ class RecipeController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $now = new \DateTimeImmutable();
-            $recipe->setCreatedAt($now)
-                ->setUpdatedAt($now);
             $em->persist($recipe);
             $em->flush();
             $this->addFlash('success','La recette a bien été ajoutée.');

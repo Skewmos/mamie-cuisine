@@ -27,3 +27,7 @@
 ###> PHPStorm ###
 .idea
 ###< PHPStorm ###
+
+
+/public/uploads/recipes
+

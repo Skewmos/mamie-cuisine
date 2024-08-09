@@ -16,6 +16,9 @@
                     {% endif %}
                     <div class="col-md-3">
                         <div class="card">
+                            {% if recipe.thumbnail %}
+                                <img src="{{ vich_uploader_asset(recipe, 'thumbnailFile') }}" class="card-img-top" alt="{{ recipe.title }}">
+                            {% endif %}
                             <div class="card-body">
                                 <h5 class="card-title">{{ recipe.title }}</h5>
                                 <p class="card-text">{{ recipe.content|slice(0, 180) ~ '...'  }}</p>
